@@ -31,9 +31,9 @@ main(_) ->
 
 start_distribution(NodeName, Cookie) ->
     MyNode = make_script_node(NodeName),
-    {ok, _Pid} = net_kernel:start([MyNode, shortnames]),
+    {ok, _Pid} = net_kernel:start([MyNode, longnames]),
     erlang:set_cookie(node(), list_to_atom(Cookie)),
-    TargetNode = make_target_node(NodeName),
+    TargetNode = list_to_atom(NodeName),
     case {net_kernel:hidden_connect_node(TargetNode),
           net_adm:ping(TargetNode)} of
         {true, pong} ->
@@ -44,9 +44,6 @@ start_distribution(NodeName, Cookie) ->
     end,
     TargetNode.
 
-make_target_node(Node) ->
-    [_, Host] = string:tokens(atom_to_list(node()), "@"),
-    list_to_atom(lists:concat([Node, "@", Host])).
-
 make_script_node(Node) ->
-    list_to_atom(lists:concat([Node, "_upgrader_", os:getpid()])).
+    [_, Host] = string:tokens(Node, "@"),
+    list_to_atom(lists:concat(["upgrader_", os:getpid(), "@", Host])).
