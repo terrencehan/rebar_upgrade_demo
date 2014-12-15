@@ -1,7 +1,7 @@
 {application, upgrade_demo,
  [
   {description, ""},
-  {vsn, "1.0.0.0"},
+  {vsn, "###VERSION_TEMPLATE###"},
   {registered, []},
   {applications, [
                   kernel,
