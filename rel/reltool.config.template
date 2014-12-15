@@ -1,0 +1,44 @@
+%% -*- mode: erlang -*-
+%% ex: ft=erlang
+{sys, [
+       {lib_dirs, ["../../"]},
+       {erts, [{mod_cond, derived}, {app_file, strip}]},
+       {app_file, strip},
+       {rel, "upgrade_demo", "1",
+        [
+         kernel,
+         stdlib,
+         sasl,
+         upgrade_demo
+        ]},
+       {rel, "start_clean", "",
+        [
+         kernel,
+         stdlib
+        ]},
+       {boot_rel, "upgrade_demo"},
+       {profile, embedded},
+       {incl_cond, derived},
+       {excl_archive_filters, [".*"]}, %% Do not archive built libs
+       {excl_sys_filters, ["^bin/(?!start_clean.boot)",
+                           "^erts.*/bin/(dialyzer|typer)",
+                           "^erts.*/(doc|info|include|lib|man|src)"]},
+       {excl_app_filters, ["\.gitignore"]},
+       {app, upgrade_demo, [{mod_cond, app}, {incl_cond, include}]}
+      ]}.
+
+{target_dir, "upgrade_demo"}.
+
+{overlay, [
+           {mkdir, "log/sasl"},
+           {copy, "files/erl", "\{\{erts_vsn\}\}/bin/erl"},
+           {copy, "files/nodetool", "releases/\{\{rel_vsn\}\}/nodetool"},
+           {copy, "upgrade_demo/bin/start_clean.boot",
+                  "\{\{erts_vsn\}\}/bin/start_clean.boot"},
+           {copy, "files/upgrade_demo", "bin/upgrade_demo"},
+           {copy, "files/upgrade_demo.cmd", "bin/upgrade_demo.cmd"},
+           {copy, "files/start_erl.cmd", "bin/start_erl.cmd"},
+           {copy, "files/install_upgrade.escript", "bin/install_upgrade.escript"},
+           {copy, "files/sys.config", "releases/\{\{rel_vsn\}\}/sys.config"},
+           {copy, "files/vm.args", "releases/\{\{rel_vsn\}\}/vm.args"}
+          ]}.
