@@ -37,7 +37,6 @@ fi
 RUNNER_SCRIPT_DIR=$(cd ${0%/*} && pwd)
 ROOT=$(echo $RUNNER_SCRIPT_DIR | sed -e "s/\(.*${RELEASE_NAME}\).*$/\1/")
 REL_ROOT=$ROOT/rel
-SRC_DIR=$ROOT/apps/$RELEASE_NAME/src
 RELEASES_DIR=$REL_ROOT/$RELEASE_NAME/releases
 RELEASE_BIN_DIR=$REL_ROOT/$RELEASE_NAME/bin
 REBAR=$ROOT/rebar
@@ -55,7 +54,7 @@ fi
 
 REL_CONFIG_FILE=$REL_ROOT/reltool.config
 
-for FILE_PATH in `find ${ROOT}/apps -name '*.app.src'` $REL_CONFIG_FILE
+for FILE_PATH in `find ${ROOT} -name '*.app.src'` $REL_CONFIG_FILE
 do
     change_version $FILE_PATH
 done
