@@ -32,7 +32,7 @@
 {overlay, [
            {mkdir, "log/sasl"},
            {copy, "files/erl", "\{\{erts_vsn\}\}/bin/erl"},
-           {copy, "files/nodetool", "releases/\{\{rel_vsn\}\}/nodetool"},
+           {copy, "files/nodetool", "\{\{erts_vsn\}\}/bin/nodetool"},
            {copy, "upgrade_demo/bin/start_clean.boot",
                   "\{\{erts_vsn\}\}/bin/start_clean.boot"},
            {copy, "files/upgrade_demo", "bin/upgrade_demo"},
