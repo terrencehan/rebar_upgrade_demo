@@ -1,0 +1,12 @@
+{application, upgrade_demo,
+ [
+  {description, ""},
+  {vsn, "###VERSION_TEMPLATE###"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { upgrade_demo_app, []}},
+  {env, []}
+ ]}.
