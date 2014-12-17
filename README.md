@@ -1,18 +1,17 @@
 我们是这样使用rebar更新Erlang代码的
 ========
 在公司的Erlang团队中，我们采用rebar来管理依赖、构建、自动化测试、部署和升级。前面的
-几个话题在最初接触rebar的时候网上已经能搜到不少介绍的文章，这里就不做赘述了。本文主要
-集中介绍我们采用rebar进行产品热更的实践，当然，如果你有更好、更方便的方法，欢迎交流。
+几个话题网上已经能搜到不少介绍的文章，这里就不做赘述了。本文主要集中介绍我们采用
+rebar进行产品热更的实践，当然，如果你有更好、更方便的方法，欢迎交流。
 
 ### 目标
-先来介绍我们的目标, 假设我们的第一个release版本为'1.0.0.0', 我需要这样的一个工具，它可以
-简单地执行`upgrade.sh -n upgrade_demo -v 1.0.0.1`就将热更升级到新的版本。
+先来介绍目标, 假设第一个release版本为'1.0.0.0', 我需要这样的一个工具，它可以简单地执
+行`upgrade.sh -n upgrade_demo -v 1.0.0.1`就将产品热更到新的版本。
 
 ### 问题
-从rebar的wiki中我们可以找到一个更新代码的简单教程，遗憾的是，在试用的时候总会有报错。
-例如，可以从1.0.0.0升级到1.0.0.1但是再往1.0.0.2升级的时候就会有异常抛出。通过翻rebar的
-代码可以看到里边有一处明显的[bug](https://github.com/rebar/rebar/pull/303)，看来这个
-功能几乎没有人用过:(
+从rebar的wiki中我们能找到一个更新代码的简单教程，遗憾的是，在试用的时候总会有报错。
+例如，它可以从1.0.0.0升级到1.0.0.1, 但是再往1.0.0.2升级的时候就会有异常抛出。通过翻rebar的
+代码发现里边有一处明显的[bug](https://github.com/rebar/rebar/pull/303)。
 
 ### DEMO
 
@@ -21,7 +20,7 @@
 OK, 下面我们用一个简单的例子来说明：
 
 为了让读者有个感性的认识, 本repo demo分支的[commits](https://github.com/terrencehan/rebar_upgrade_demo/commits/demo)
-仔细按照下文的步骤进行了调整，如果你熟悉 使用git，希望能帮你节省一些时间。
+仔细按照下文的步骤进行了调整，如果你熟悉git，希望能帮你节省一些时间。
 
 首先你需要下载一个新版本的rebar（至少包含#commit [899d60c](https://github.com/rebar/rebar/commit/899d60cdb0e9238cff954add30c2f27e3644e0be)）。
 
@@ -50,7 +49,7 @@ OK, 下面我们用一个简单的例子来说明：
     cd rel
     ../rebar create-node nodeid=upgrade_demo
 
-这里生成的`rel/files/install_upgrade.escript`不符合需求，简单修改了一下[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/1a3eb1634f2ef15d709b4b5106993e93ff9a09cc)
+这里生成的`rel/files/install_upgrade.escript`不符合需求，简单修改一下[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/1a3eb1634f2ef15d709b4b5106993e93ff9a09cc)
 
     $EDITOR files/install_upgrade.escript
 
@@ -58,13 +57,13 @@ OK, 下面我们用一个简单的例子来说明：
 
     $EDITOR reltool.config
 
-为了方便更新、测试添加简单的[升级辅助脚本](https://github.com/terrencehan/rebar_upgrade_demo/blob/demo/scripts/upgrade.sh)
+添加[升级辅助脚本](https://github.com/terrencehan/rebar_upgrade_demo/blob/demo/scripts/upgrade.sh)
 和[rpc脚本](https://github.com/terrencehan/rebar_upgrade_demo/blob/demo/rpc_test.erl)
 
-为了避免修改代码中版本信息的繁琐，这里创建了两个.template文件，并设置锚点[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/3c2f0611332d44499af7a2a1e627e90523ad4669)
+为了避免修改代码中版本号的繁琐，这里创建了两个.template文件，并设置锚点[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/3c2f0611332d44499af7a2a1e627e90523ad4669)
 
 另外在测试的时候发现目前rebar在处理nodetool有一处和文件位置相关的简单bug, 简单处理一下[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/661faf14964d7c5e019d406ffa7a139ec3fe58d6)
-并且调整了一下我们的升级脚本（因为在我们这里产品的代码是放在apps/里面的，这和此demo代码树层级不符合）[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/4c42ad783caa0e2046113fc723811f6651389019)
+并且调整了升级脚本（因为在我们这里产品的代码是放在apps/里面的，这和此demo代码树层级不符合）[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/4c42ad783caa0e2046113fc723811f6651389019)
 
 #### 升级测试
 
