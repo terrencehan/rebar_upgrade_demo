@@ -43,7 +43,7 @@ OK, 下面我们用一个简单的例子来说明：
 
     $EDITOR src/upgrade_demo_app.erl
 
-发布前准备node[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/82dc6780eab06aa93a86c36f64d17d9d83d068a4)
+创建node[#commit](https://github.com/terrencehan/rebar_upgrade_demo/commit/82dc6780eab06aa93a86c36f64d17d9d83d068a4)
 
     mkdir rel
     cd rel
@@ -77,8 +77,6 @@ OK, 下面我们用一个简单的例子来说明：
     ./reabr compile
     cd rel
     ../rebar generate
-
-现在你应该在'当前目录(rel/)'中有`upgrade_demo`文件夹。
 
 启动node
 
